@@ -1,17 +1,23 @@
 from django.shortcuts import redirect,render
-from lists.models import Item
+from lists.models import Item, List
 
 # Создайте ваши представления здесь.
 def home_page(request):
-#'''домашняя страница'''
-	return render(request, 'home.html')
+#    if request.method == 'POST':
+#        Item.objects.create(text=request.POST['item_text'])
+#        return redirect('/lists/trustory/')
+    return render(request, 'home.html')
+
+    items = Item.objects.all()
+    return render(request, 'home.html', {'items': items})
 
 def view_list(request):
 #'''представление списка'''
 	items = Item.objects.all()
-	return render(request, 'list.html', {'items': items})
+	return render(request, 'home.html', {'items': items})
 
 def new_list(request):
 #'''новый список'''
-	Item.objects.create(text=request.POST['item_text'])
-	return redirect('/lists/trustory/')
+#	list_ = List.objects.create()
+    Item.objects.create(text=request.POST['item_text'])
+    return redirect('/lists/trustory/')
