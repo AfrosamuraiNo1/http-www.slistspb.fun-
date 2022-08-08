@@ -17,7 +17,7 @@ def view_list(request):
 	return render(request, 'home.html', {'items': items})
 
 def new_list(request):
-#'''новый список'''
-#	list_ = List.objects.create()
-    Item.objects.create(text=request.POST['item_text'])
+#    '''новый список'''
+    list_ = List.objects.create()
+    Item.objects.create(text=request.POST['item_text'], list=list_)
     return redirect('/lists/trustory/')

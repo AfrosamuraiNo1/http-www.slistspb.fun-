@@ -22,13 +22,12 @@ class ListViewTest(TestCase):
 #'''тест: используется шаблон списка'''
 		response = self.client.get('/lists/trustory/')
 		self.assertTemplateUsed(response, 'list.html')
+	
 	def test_displays_all_items(self):
 #	'''тест: отображаются все элементы списка'''
-		Item.objects.create(text='itemey 1')
-		Item.objects.create(text='itemey 2')
-		response = self.client.get('/lists/trustory/')
-		self.assertContains(response, 'itemey 1')
-		self.assertContains(response, 'itemey 2')
+		list_ = List.objects.create()
+		Item.objects.create(text='itemey 1', list=list_)
+		Item.objects.create(text='itemey 2', list=list_)
 
 
 class ListAndItemModelsTest(TestCase):
@@ -40,12 +39,12 @@ class ListAndItemModelsTest(TestCase):
 		list_.save()
 
 		first_item = Item()
-		first_item.text = 'The first (ever) list item'
+		first_item.text = 'Первый (самый) элемент списка'
 		first_item.list = list_
 		first_item.save()
 
 		second_item = Item()
-		second_item.text = 'Item the second'
+		second_item.text = 'Элемент второй'
 		second_item.list = list_
 		second_item.save()
 
@@ -57,9 +56,9 @@ class ListAndItemModelsTest(TestCase):
 		
 		first_saved_item = saved_items[0]
 		second_saved_item = saved_items[1]
-		self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+		self.assertEqual(first_saved_item.text, 'Первый (самый) элемент списка')
 		self.assertEqual(first_saved_item.list, list_)
-		self.assertEqual(second_saved_item.text, 'Item the second')
+		self.assertEqual(second_saved_item.text, 'Элемент второй')
 		self.assertEqual(second_saved_item.list, list_)
 
 class NewListTest(TestCase):
