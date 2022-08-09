@@ -9,7 +9,21 @@ MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 #	'''тест нового посетителя'''
-
+	def test_layout_and_styling(self):
+#		'''тест макета и стилевого оформления'''
+		# Эдит открывает домашнюю страницу
+		self.browser.get(self.live_server_url)
+		self.browser.set_window_size(1024, 768)
+		# Она замечает, что поле ввода аккуратно центрировано
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+		inputbox.location['x'] + inputbox.size['width'] / 2,512,delta=10)
+		inputbox.send_keys('testing')
+		inputbox.send_keys(Keys.ENTER)
+		self.wait_for_row_in_list_table('1: testing')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+		inputbox.location['x'] + inputbox.size['width'] / 2,512,delta=10)
 	def setUp(self):
 #		'''установка'''
 		self.browser = webdriver.Firefox()
@@ -45,7 +59,7 @@ class NewVisitorTest(LiveServerTestCase):
 		inputbox = self.browser.find_element_by_id('id_new_item')
 		self.assertEqual(
 			inputbox.get_attribute('placeholder'),
-			'Enter a to-do item'
+			'Введите элемент списка'
 			)
 		# Она набирает в текстовом поле "Купить павлиньи перья" (ее хобби –вязание рыболовных мушек)
 		inputbox.send_keys('Купить павлиньи перья')
@@ -60,8 +74,8 @@ class NewVisitorTest(LiveServerTestCase):
 		inputbox.send_keys('Сделать мушку из павлиньих перьев')
 		inputbox.send_keys('\ue007')
 		# Страница снова обновляется, и теперь показывает оба элемента ее списка
-		self.wait_for_row_in_list_table('1: Купить павлиньи перья')
 		self.wait_for_row_in_list_table('2: Сделать мушку из павлиньих перьев')
+		self.wait_for_row_in_list_table('1: Купить павлиньи перья')
 		# Эдит интересно, запомнит ли сайт ее список. Далее она видит, что
 		# сайт сгенерировал для нее уникальный URL-адрес – об этом
 		# выводится небольшой текст с объяснениями.
