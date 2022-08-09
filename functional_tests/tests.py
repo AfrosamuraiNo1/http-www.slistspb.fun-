@@ -1,4 +1,4 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -7,7 +7,7 @@ from selenium.common.exceptions import WebDriverException
 
 MAX_WAIT = 10
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 #	'''тест нового посетителя'''
 	def test_layout_and_styling(self):
 #		'''тест макета и стилевого оформления'''
@@ -59,7 +59,7 @@ class NewVisitorTest(LiveServerTestCase):
 		inputbox = self.browser.find_element_by_id('id_new_item')
 		self.assertEqual(
 			inputbox.get_attribute('placeholder'),
-			'Введите элемент списка'
+			'Enter a to-do item'
 			)
 		# Она набирает в текстовом поле "Купить павлиньи перья" (ее хобби –вязание рыболовных мушек)
 		inputbox.send_keys('Купить павлиньи перья')
